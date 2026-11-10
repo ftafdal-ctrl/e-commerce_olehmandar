@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 210" fill="none">
+
+  <!-- Tiang layar -->
+  <line x1="112" y1="28" x2="112" y2="142" stroke="#2D6A4F" stroke-width="3.5" stroke-linecap="round"/>
+
+  <!-- Layar kiri besar (hijau tua) -->
+  <path d="M110 32 L110 132 L62 118 Z" fill="#2D6A4F"/>
+
+  <!-- Layar kanan (terra cotta) -->
+  <path d="M114 50 L114 132 L158 118 Z" fill="#B5533C"/>
+
+  <!-- Layar kiri kecil aksen (hijau lebih muda) -->
+  <path d="M110 86 L110 132 L78 126 Z" fill="#4A8C6F"/>
+
+  <!-- Badan perahu / lambung -->
+  <path d="M56 140 Q112 162 168 140 L162 150 Q112 172 62 150 Z" fill="#2D6A4F"/>
+
+  <!-- Garis keel bawah (terra cotta) -->
+  <path d="M60 154 Q112 168 164 154" stroke="#B5533C" stroke-width="4" stroke-linecap="round" fill="none"/>
+
+  <!-- Matahari emas -->
+  <circle cx="152" cy="54" r="18" fill="#C9A84C"/>
+
+  <!-- Teks "Oleh" -->
+  <text x="196" y="100"
+        font-family="Georgia, 'Book Antiqua', serif"
+        font-size="52"
+        font-weight="700"
+        fill="#2D5016">Oleh</text>
+
+  <!-- Teks "Mandar" -->
+  <text x="196" y="162"
+        font-family="Georgia, 'Book Antiqua', serif"
+        font-size="52"
+        font-weight="700"
+        fill="#2D5016">Mandar</text>
+
+</svg>
