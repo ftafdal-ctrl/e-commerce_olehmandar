@@ -62,6 +62,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{orderNumber}', [OrderController::class, 'show'])->name('orders.show');
+    Route::delete('/orders/{orderNumber}', [OrderController::class, 'destroy'])->name('orders.destroy');
     Route::post('/orders/{orderNumber}/payment', [PaymentController::class, 'store'])->name('orders.payment.store');
 });
 

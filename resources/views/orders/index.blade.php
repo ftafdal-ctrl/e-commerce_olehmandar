@@ -6,6 +6,13 @@
 <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <h1 class="text-2xl font-bold text-mandar-700 mb-6">Pesanan Saya</h1>
 
+    @if(session('success'))
+        <div class="mb-4 rounded-lg bg-green-50 p-3 text-sm text-green-700">{{ session('success') }}</div>
+    @endif
+    @if(session('warning'))
+        <div class="mb-4 rounded-lg bg-amber-50 p-3 text-sm text-amber-700">{{ session('warning') }}</div>
+    @endif
+
     @if($orders->count())
         <div class="space-y-4">
             @foreach($orders as $order)
@@ -26,14 +33,24 @@
                                     Pembayaran: {{ ucfirst($order->payment->status) }}
                                 </span>
                             @else
-                                <span class="text-xs text-red-500">Belum ada bukti transfer</span>
+                                <span class="text-xs text-red-500">Belum ada bukti pembayaran</span>
                             @endif
                         </div>
                     </div>
-                    <div class="mt-3 pt-3 border-t border-gray-100 flex justify-end">
+                    <div class="mt-3 pt-3 border-t border-gray-100 flex flex-wrap justify-end gap-4">
                         <a href="{{ route('orders.show', $order->order_number) }}" class="text-sm text-mandar-600 hover:underline font-medium">
                             Lihat Detail →
                         </a>
+                        @if($order->status === 'delivered')
+                            <form action="{{ route('orders.destroy', $order->order_number) }}" method="POST"
+                                  onsubmit="return confirm('Hapus riwayat pesanan ini? Tindakan ini tidak dapat dibatalkan.')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-sm text-red-600 hover:underline font-medium">
+                                    Hapus Riwayat
+                                </button>
+                            </form>
+                        @endif
                     </div>
                 </div>
             @endforeach

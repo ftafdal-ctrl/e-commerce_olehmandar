@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: olehmandar
+    runtime: docker
+    plan: starter
+    region: singapore
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /login
+    disk:
+      name: olehmandar-storage
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_KEY
+        generateValue: true
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DATABASE_URL
+        sync: false
+      - key: FILESYSTEM_DISK
+        value: public
+      - key: PUBLIC_STORAGE_PATH
+        value: /var/data/public
+      - key: LOG_CHANNEL
+        value: stderr

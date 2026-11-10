@@ -7,7 +7,7 @@ Membangun aplikasi e-commerce **olehMandar** untuk penjualan produk oleh-oleh kh
 Fitur utama:
 - Katalog produk dengan kategori
 - Keranjang belanja
-- Checkout dengan pembayaran manual (transfer bank)
+- Checkout dengan pembayaran manual via QRIS
 - Konfirmasi pembayaran oleh admin
 - Tracking status pengiriman pesanan
 - Autentikasi pengguna (login/register)
@@ -182,8 +182,8 @@ Mengolah proses checkout: input alamat pengiriman, review pesanan, dan simpan or
 - [ ] Buat `CheckoutController@store` — validasi form, buat `Order`, buat `OrderItem` dari cart, kosongkan cart
 - [ ] Generate `order_number` unik (contoh: `MDR-20241201-0001`)
 - [ ] Buat view `checkout/index.blade.php` — form + ringkasan pesanan
-- [ ] Buat view `checkout/success.blade.php` — nomor order + instruksi transfer bank
-- [ ] Tampilkan info rekening tujuan transfer di halaman success (hardcode atau dari config)
+- [ ] Buat view `checkout/success.blade.php` — nomor order + instruksi pembayaran QRIS
+- [ ] Tampilkan gambar QRIS toko dari `public/images/qris.png` di halaman pembayaran
 - [ ] Daftarkan route: `GET /checkout`, `POST /checkout`
 
 **Relevant Context:**
@@ -198,21 +198,22 @@ Mengolah proses checkout: input alamat pengiriman, review pesanan, dan simpan or
 ### Sub-Task 7 — Konfirmasi Pembayaran (User)
 
 **Intent:**
-Memungkinkan user mengunggah bukti transfer sebagai konfirmasi pembayaran manual.
+Memungkinkan user mengunggah bukti pembayaran QRIS sebagai konfirmasi pembayaran manual.
 
 **Expected Outcomes:**
 - Halaman riwayat pesanan user menampilkan semua order
-- Untuk order dengan status `pending`, ada tombol "Upload Bukti Transfer"
+- Untuk order dengan status `pending`, ada tombol "Upload Bukti Pembayaran QRIS"
+- User dapat menghapus riwayat pesanan berstatus `delivered` miliknya
 - Setelah upload, record `payments` tersimpan dengan status `pending`
 - User menerima notifikasi bahwa pembayaran sedang diverifikasi
 
 **Todo List:**
 - [ ] Buat `OrderController@index` (user) — list semua order milik user login
 - [ ] Buat `OrderController@show` (user) — detail order + status pembayaran + tracking
-- [ ] Buat `PaymentController@store` — validasi + simpan bukti transfer ke storage, buat record `payments`
+- [ ] Buat `PaymentController@store` — validasi + simpan bukti pembayaran QRIS ke storage, buat record `payments`
 - [ ] Buat view `orders/index.blade.php` — list pesanan user
-- [ ] Buat view `orders/show.blade.php` — detail pesanan + form upload bukti transfer + history status
-- [ ] Daftarkan route: `GET /orders`, `GET /orders/{orderNumber}`, `POST /orders/{orderNumber}/payment`
+- [ ] Buat view `orders/show.blade.php` — detail pesanan + form upload bukti pembayaran QRIS + history status
+- [ ] Daftarkan route: `GET /orders`, `GET /orders/{orderNumber}`, `DELETE /orders/{orderNumber}`, `POST /orders/{orderNumber}/payment`
 
 **Relevant Context:**
 - `app/Http/Controllers/OrderController.php`
@@ -258,7 +259,7 @@ Memberikan admin kemampuan untuk melihat semua pesanan, mengkonfirmasi pembayara
 
 **Expected Outcomes:**
 - Admin bisa melihat semua pesanan dengan filter status
-- Admin bisa melihat bukti transfer dan mengkonfirmasi/menolak pembayaran
+- Admin bisa melihat bukti pembayaran QRIS dan mengkonfirmasi/menolak pembayaran
 - Admin bisa menambah update status pengiriman (misalnya: "Paket dikirim via JNE, resi: xxx")
 - Status order otomatis terupdate sesuai alur
 
@@ -330,6 +331,6 @@ Sub-Task 1 (Setup)
 - **Database**: MySQL 8.x, database name `ecommerce_mandar`
 - **CSS**: Tailwind CSS v3 via Vite
 - **Storage**: gambar produk disimpan di `storage/app/public/products/`
-- **Pembayaran**: manual transfer bank, admin konfirmasi dari panel
+- **Pembayaran**: QRIS manual, unggah bukti dan konfirmasi dari panel admin
 - **Tidak ada payment gateway** (Midtrans, dll.) di fase ini
 - **Tracking**: berbasis status manual yang diupdate admin (bukan API ekspedisi)

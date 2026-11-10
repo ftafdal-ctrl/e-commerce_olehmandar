@@ -70,7 +70,12 @@
                         </svg>
                         Informasi Pembayaran
                     </h2>
-                    <p class="text-sm text-amber-700">Setelah order dibuat, Anda akan menerima instruksi transfer bank. Upload bukti transfer untuk konfirmasi pesanan.</p>
+                    <p class="text-sm text-amber-700">
+                        Pembayaran hanya menggunakan QRIS. Setelah pesanan dibuat, pindai QRIS toko di halaman detail pesanan dan unggah bukti pembayaran.
+                        @unless (file_exists(public_path('images/qris.png')))
+                            <strong>QRIS toko belum tersedia.</strong>
+                        @endunless
+                    </p>
                 </div>
             </div>
 

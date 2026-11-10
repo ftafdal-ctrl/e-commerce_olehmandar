@@ -64,12 +64,17 @@
             <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
                 <h3 class="font-semibold text-gray-700 mb-3">Bukti Pembayaran</h3>
                 <dl class="grid grid-cols-2 gap-2 text-sm mb-4">
-                    <dt class="text-gray-500">Bank</dt>
-                    <dd class="font-medium text-gray-800">{{ $order->payment->bank_name }}</dd>
-                    <dt class="text-gray-500">No. Rekening</dt>
-                    <dd class="font-medium text-gray-800">{{ $order->payment->account_number }}</dd>
-                    <dt class="text-gray-500">Atas Nama</dt>
-                    <dd class="font-medium text-gray-800">{{ $order->payment->account_name }}</dd>
+                    @if($order->payment->payment_method === 'qris')
+                        <dt class="text-gray-500">Metode</dt>
+                        <dd class="font-medium text-gray-800">QRIS</dd>
+                    @else
+                        <dt class="text-gray-500">Bank</dt>
+                        <dd class="font-medium text-gray-800">{{ $order->payment->bank_name }}</dd>
+                        <dt class="text-gray-500">No. Rekening</dt>
+                        <dd class="font-medium text-gray-800">{{ $order->payment->account_number }}</dd>
+                        <dt class="text-gray-500">Atas Nama</dt>
+                        <dd class="font-medium text-gray-800">{{ $order->payment->account_name }}</dd>
+                    @endif
                     <dt class="text-gray-500">Jumlah</dt>
                     <dd class="font-bold text-mandar-600">Rp {{ number_format($order->payment->amount, 0, ',', '.') }}</dd>
                     <dt class="text-gray-500">Status</dt>
@@ -113,7 +118,7 @@
             </div>
         @else
             <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-700">
-                Pembeli belum mengirim bukti transfer.
+                Pembeli belum mengirim bukti pembayaran.
             </div>
         @endif
 

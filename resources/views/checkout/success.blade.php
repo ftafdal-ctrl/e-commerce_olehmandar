@@ -48,40 +48,31 @@
         </div>
     </div>
 
-    {{-- Instruksi Transfer --}}
+    {{-- Instruksi QRIS --}}
     <div class="card p-6 mb-6 border-l-4 border-gold-500">
         <h2 class="font-bold text-gray-800 mb-4 flex items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gold-500" viewBox="0 0 20 20" fill="currentColor">
                 <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z"/>
                 <path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clip-rule="evenodd"/>
             </svg>
-            Instruksi Transfer Bank
+            Instruksi Pembayaran QRIS
         </h2>
 
-        <p class="text-sm text-gray-600 mb-4">Silakan transfer sejumlah <strong class="text-mandar-600">{{ $order->formatted_total }}</strong> ke rekening berikut:</p>
-
-        <div class="bg-cream-50 rounded-lg p-4 space-y-2 text-sm">
-            <div class="flex justify-between">
-                <span class="text-gray-500">Bank</span>
-                <span class="font-semibold text-gray-800">Bank BRI</span>
-            </div>
-            <div class="flex justify-between">
-                <span class="text-gray-500">Nomor Rekening</span>
-                <span class="font-bold text-mandar-600 text-base tracking-wide">1234-5678-9012</span>
-            </div>
-            <div class="flex justify-between">
-                <span class="text-gray-500">Atas Nama</span>
-                <span class="font-semibold text-gray-800">olehMandar Store</span>
-            </div>
-        </div>
-
-        <p class="text-xs text-gray-400 mt-3">* Transfer dalam waktu 24 jam. Sertakan nomor pesanan <strong>{{ $order->order_number }}</strong> pada berita transfer.</p>
+        <p class="text-sm text-gray-600 mb-4">Bayar tepat sebesar <strong class="text-mandar-600">{{ $order->formatted_total }}</strong> menggunakan QRIS berikut.</p>
+        @if (file_exists(public_path('images/qris.png')))
+            <img src="{{ asset('images/qris.png') }}" alt="QRIS pembayaran olehMandar" class="w-64 max-w-full mx-auto rounded-lg border border-gray-200">
+        @else
+            <p class="rounded-lg bg-amber-50 p-4 text-sm text-amber-800">
+                QRIS toko belum tersedia. Pembayaran QRIS belum dapat dilakukan sampai QRIS resmi ditambahkan ke <code>public/images/qris.png</code>.
+            </p>
+        @endif
+        <p class="text-xs text-gray-400 mt-3">Setelah membayar, unggah bukti pembayaran pada detail pesanan. Nomor pesanan: <strong>{{ $order->order_number }}</strong>.</p>
     </div>
 
     {{-- Actions --}}
     <div class="flex flex-col sm:flex-row gap-3">
         <a href="{{ route('orders.show', $order->order_number) }}" class="flex-1 btn-primary text-center">
-            Upload Bukti Transfer
+            Unggah Bukti Pembayaran QRIS
         </a>
         <a href="{{ route('orders.index') }}" class="flex-1 btn-outline text-center">
             Lihat Semua Pesanan

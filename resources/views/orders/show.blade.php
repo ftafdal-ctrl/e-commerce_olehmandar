@@ -42,39 +42,31 @@
                 </div>
             </div>
 
-            {{-- Upload Bukti Transfer --}}
+            {{-- Upload Bukti Pembayaran QRIS --}}
             @if(!$order->payment && $order->status === 'pending')
                 <div class="card p-6 border-l-4 border-gold-500">
-                    <h2 class="font-bold text-gray-800 mb-1">Upload Bukti Transfer</h2>
-                    <p class="text-sm text-gray-500 mb-4">Transfer ke rekening BRI: <strong class="text-mandar-600">1234-5678-9012</strong> a.n. olehMandar Store sebesar <strong>{{ $order->formatted_total }}</strong></p>
+                    <h2 class="font-bold text-gray-800 mb-1">Pembayaran QRIS</h2>
+                    <p class="text-sm text-gray-500 mb-4">Bayar sebesar <strong>{{ $order->formatted_total }}</strong> menggunakan QRIS toko.</p>
+                    @if (file_exists(public_path('images/qris.png')))
+                        <img src="{{ asset('images/qris.png') }}" alt="QRIS pembayaran olehMandar" class="w-64 max-w-full mx-auto mb-4 rounded-lg border border-gray-200">
+                    @else
+                        <p class="text-sm text-amber-800 bg-amber-50 rounded-lg p-3 mb-4">
+                            QRIS toko belum tersedia. Pembayaran QRIS belum dapat dilakukan sampai QRIS resmi ditambahkan ke <code>public/images/qris.png</code>.
+                        </p>
+                    @endif
 
-                    <form action="{{ route('orders.payment.store', $order->order_number) }}" method="POST" enctype="multipart/form-data" class="space-y-3">
-                        @csrf
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    @if (file_exists(public_path('images/qris.png')))
+                        <form action="{{ route('orders.payment.store', $order->order_number) }}" method="POST" enctype="multipart/form-data" class="space-y-3">
+                            @csrf
                             <div>
-                                <label class="block text-xs font-medium text-gray-600 mb-1">Nama Bank *</label>
-                                <input type="text" name="bank_name" placeholder="BRI / BCA / Mandiri..."
-                                       class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-mandar-500" required>
-                            </div>
-                            <div>
-                                <label class="block text-xs font-medium text-gray-600 mb-1">Nomor Rekening Pengirim *</label>
-                                <input type="text" name="account_number"
-                                       class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-mandar-500" required>
-                            </div>
-                            <div class="sm:col-span-2">
-                                <label class="block text-xs font-medium text-gray-600 mb-1">Atas Nama *</label>
-                                <input type="text" name="account_name"
-                                       class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-mandar-500" required>
-                            </div>
-                            <div class="sm:col-span-2">
-                                <label class="block text-xs font-medium text-gray-600 mb-1">Foto Bukti Transfer *</label>
+                                <label class="block text-xs font-medium text-gray-600 mb-1">Foto Bukti Pembayaran *</label>
                                 <input type="file" name="proof_image" accept="image/*"
                                        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-mandar-500" required>
                                 <p class="text-xs text-gray-400 mt-1">Format: JPG, PNG, WEBP. Maks 2MB.</p>
                             </div>
-                        </div>
-                        <button type="submit" class="btn-secondary">Kirim Bukti Transfer</button>
-                    </form>
+                            <button type="submit" class="btn-secondary">Kirim Bukti Pembayaran</button>
+                        </form>
+                    @endif
                 </div>
             @elseif($order->payment)
                 <div class="card p-6">
@@ -90,7 +82,7 @@
                     </div>
                     @if($order->payment->proof_image_url)
                         <a href="{{ $order->payment->proof_image_url }}" target="_blank" class="mt-3 inline-block text-sm text-mandar-600 hover:underline">
-                            Lihat bukti transfer →
+                            Lihat bukti pembayaran →
                         </a>
                     @endif
                     @if($order->payment->rejection_reason)

@@ -59,6 +59,12 @@
 # (Laragon otomatis menambahkan ke hosts file Windows)
 
 
+## OPSI 3: Deploy publik ke Render
+# -------------------------------------------------------
+# Panduan Docker, PostgreSQL, disk persisten, dan akun admin:
+# lihat RENDER.md
+
+
 ## CATATAN PENTING
 # -------------------------------------------------------
 # - File CSS sudah di-build ke: public/build/assets/

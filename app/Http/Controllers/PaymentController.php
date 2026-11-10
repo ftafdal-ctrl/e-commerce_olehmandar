@@ -16,28 +16,31 @@ class PaymentController extends Controller
             ->firstOrFail();
 
         if ($order->payment) {
-            return back()->with('error', 'Bukti pembayaran sudah dikirim sebelumnya.');
+            return back()->with('error', 'Bukti pembayaran QRIS sudah dikirim sebelumnya.');
+        }
+
+        if (! file_exists(public_path('images/qris.png'))) {
+            return back()->with('error', 'QRIS toko belum tersedia. Pembayaran QRIS belum dapat dilakukan.');
         }
 
         $request->validate([
-            'bank_name'      => 'required|string|max:50',
-            'account_number' => 'required|string|max:30',
-            'account_name'   => 'required|string|max:100',
-            'proof_image'    => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'proof_image' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
         $path = $request->file('proof_image')->store('payments/proofs', 'public');
 
         Payment::create([
-            'order_id'       => $order->id,
-            'bank_name'      => $request->bank_name,
-            'account_number' => $request->account_number,
-            'account_name'   => $request->account_name,
-            'amount'         => $order->total_amount,
-            'proof_image'    => $path,
-            'status'         => 'pending',
+            'order_id' => $order->id,
+            'payment_method' => 'qris',
+            // These legacy columns remain required for existing bank-payment records.
+            'bank_name' => 'QRIS',
+            'account_number' => 'QRIS',
+            'account_name' => 'QRIS',
+            'amount' => $order->total_amount,
+            'proof_image' => $path,
+            'status' => 'pending',
         ]);
 
-        return back()->with('success', 'Bukti transfer berhasil dikirim. Admin akan memverifikasi dalam 1×24 jam.');
+        return back()->with('success', 'Bukti pembayaran QRIS berhasil dikirim. Admin akan memverifikasi dalam 1×24 jam.');
     }
 }

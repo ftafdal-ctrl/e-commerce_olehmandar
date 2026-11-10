@@ -8,6 +8,7 @@ class Payment extends Model
 {
     protected $fillable = [
         'order_id',
+        'payment_method',
         'bank_name',
         'account_number',
         'account_name',
@@ -19,7 +20,7 @@ class Payment extends Model
     ];
 
     protected $casts = [
-        'amount'       => 'decimal:2',
+        'amount' => 'decimal:2',
         'confirmed_at' => 'datetime',
     ];
 
@@ -30,6 +31,6 @@ class Payment extends Model
 
     public function getProofImageUrlAttribute(): ?string
     {
-        return $this->proof_image ? asset('storage/' . $this->proof_image) : null;
+        return $this->proof_image ? asset('storage/'.$this->proof_image) : null;
     }
 }
